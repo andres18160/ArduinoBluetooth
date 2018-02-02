@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/gradient"
+    tools:context="com.andres18160gmail.arduinobluetooth.ConfigDetalleActivity">
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/txtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textViewPin"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:hint="@string/txtNombre"
+                android:textSize="18sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/textViewPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_nombre"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:text="PIN:"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/spinnerPins"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignBottom="@+id/textViewPin"
+        android:layout_alignTop="@+id/textViewPin"
+        android:layout_toEndOf="@+id/textViewPin"
+        android:spinnerMode="dialog" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewPin"
+        android:layout_marginTop="19dp"
+        android:layout_weight="1"
+        android:text="Tipo:"
+        android:textSize="18sp" />
+
+
+    <Spinner
+        android:id="@+id/spinnerTipos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:textAlignment="center" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerTipos"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/digital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Digital"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/analogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Analogo"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
+
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_default"
+        android:text="Guardar"
+        android:textColor="@android:color/white"
+        app:spinning_bar_color="#fff"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="4dp"
+        android:onClick="Guardar"/>
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btnActualizar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_default"
+        android:text=" Actualizar "
+        android:textColor="@android:color/white"
+        app:spinning_bar_color="#fff"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="4dp"
+        android:onClick="Actualizar"/>
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btnEliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_default"
+        android:text="Eliminar"
+        android:textColor="@android:color/white"
+        app:spinning_bar_color="#fff"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="4dp"
+        android:onClick="Eliminar"/>
+
+
+
+
+
+
+
+
+</RelativeLayout>

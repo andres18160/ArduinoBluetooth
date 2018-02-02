@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ArduinoBluetooth</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="BtnIngresar">Login</string>
+    <string name="txtUsuario">Username</string>
+    <string name="txtclave">Password</string>
+    <string name="txtNombre">First name</string>
+    <string name="txtApellido">Last name</string>
+    <string name="buscar">Search</string>
+    <string name="guardar">Save</string>
+    <string name="eliminar">Remove</string>
+    <string name="actualizar">Update</string>
+    <string name="msUsernameRequerido">The username is required!</string>
+    <string name="msPasswordRequerido">The password is required!</string>
+    <string name="msUsarioInvalido">Incorrect user or password</string>
+    <string name="cerraraSesion">Logout</string>
+    <string name="msCerrarApp">Are you sure to close the application?</string>
+    <string name="si">Yes</string>
+    <string name="no">Do not</string>
+    <string name="err_msg_nombre">Enter a name</string>
+    <string name="err_msg_usuario">Enter a username</string>
+    <string name="err_msg_apellido">Ingrese un Apellido</string>
+    <string name="err_msg_contrasena">Enter a Last Name</string>
+    <string name="err_msg_requerido">Required field</string>
+    <string name="btnAdminUser">Users</string>
+    <string name="btnAdminUserText">User administration</string>
+    <string name="btnOperacion">Operation</string>
+    <string name="btnOperacionText">Perform Weighing</string>
+    <string name="btnConfiguracion">Configuration</string>
+    <string name="btnConfiguracionText">Communication with indicator</string>
+    <string name="btnInforme">Report</string>
+    <string name="btnInformeText">Operation records</string>
+    <string name="btnEnviarInfo">Send</string>
+    <string name="btnEnviarInfoText">Send information</string>
+</resources>

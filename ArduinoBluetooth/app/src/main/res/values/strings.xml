@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ArduinoBluetooth</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="BtnIngresar">iniciar sesión</string>
+    <string name="txtUsuario">Usuario</string>
+    <string name="txtclave">Contraseña</string>
+    <string name="txtNombre">Nombre</string>
+    <string name="txtApellido">Apellido</string>
+    <string name="buscar">Buscar</string>
+    <string name="guardar">Guardar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="msUsernameRequerido">El nombre de usuario es requerido!</string>
+    <string name="msPasswordRequerido">La contraseña el requerida!</string>
+    <string name="msUsarioInvalido">Usuario o contraseña   incorrecta</string>
+    <string name="cerraraSesion">Cerrar sesión</string>
+    <string name="msCerrarApp">Estas seguro de cerrar la aplicación?</string>
+    <string name="si">Si</string>
+    <string name="no">NO</string>
+    <string name="err_msg_nombre">Ingrese un nombre</string>
+    <string name="err_msg_usuario">Ingrese un nombre de usuario</string>
+    <string name="err_msg_apellido">Ingrese un Apellido</string>
+    <string name="err_msg_contrasena">Ingrese una contraseña</string>
+    <string name="err_msg_requerido">Campo requerido</string>
+    <string name="btnAdminUser">Usuarios</string>
+    <string name="btnAdminUserText">Administración de usuarios</string>
+    <string name="btnOperacion">Operación</string>
+    <string name="btnOperacionText">Realizar Pesaje</string>
+    <string name="btnConfiguracion">Configuración</string>
+    <string name="btnConfiguracionText">Comunicación con indicador</string>
+    <string name="btnInforme">Informe</string>
+    <string name="btnInformeText">Registros de operación</string>
+    <string name="btnEnviarInfo">Enviar</string>
+    <string name="btnEnviarInfoText">Enviar Información</string>
+    <string name="txt_ip_server">Ip Servidor</string>
+    <string name="txt_port_server">Puerto Servidor</string>
+    <string name="title_activity_config__dispositivo__detalle">Config_Dispositivo_DetalleActivity
+    </string>
+</resources>
