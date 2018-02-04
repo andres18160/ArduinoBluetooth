@@ -3,12 +3,16 @@ package com.andres18160gmail.arduinobluetooth.Adaptadores;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -17,6 +21,8 @@ import com.andres18160gmail.arduinobluetooth.R;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifDrawable;
@@ -29,6 +35,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class DispositivosControlAdapter extends RecyclerView.Adapter<DispositivosControlAdapter.ViewHolderDispositivos> {
   private onCheckertoggle onchecktoggle;
+  private onSeekBar onSeekBarItem;
     ArrayList<EnDispositivo> listDatos;
     Context contexto;
     public DispositivosControlAdapter(ArrayList<EnDispositivo> listDatos) {
@@ -65,18 +72,20 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
         this.onchecktoggle=onchecktoggle;
     }
 
-    public class ViewHolderDispositivos extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    public class ViewHolderDispositivos extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
         TextView titulo;
         ToggleButton toggle;
-        GifImageView imagen;
+        ImageView imagen;
+        SeekBar analogo;
 
         public ViewHolderDispositivos(View itemView) {
             super(itemView);
             titulo=(TextView)itemView.findViewById(R.id.txtTitulo);
             toggle=(ToggleButton)itemView.findViewById(R.id.toggleBoton);
-            imagen=(GifImageView)itemView.findViewById(R.id.foto);
-
+            imagen=(ImageView)itemView.findViewById(R.id.foto);
+            analogo=(SeekBar)itemView.findViewById(R.id.seekBarAnalogo);
             toggle.setOnCheckedChangeListener(this);
+            analogo.setOnSeekBarChangeListener(this);
 
         }
 
@@ -87,29 +96,22 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
 
             try{
                 if(enDispositivo.getFoto().equalsIgnoreCase("Televisor")){
-                    gifFromAssets = new GifDrawable(manager.openFd("television.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("televisor.png"));
                 }else if(enDispositivo.getFoto().equalsIgnoreCase("Ventilador")){
-                    gifFromAssets = new GifDrawable(manager.openFd("ventiladorgif.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("ventilador.png"));
                 }else if(enDispositivo.getFoto().equalsIgnoreCase("Bombillo")){
-                    gifFromAssets = new GifDrawable(manager.openFd("bombillo.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("bombillo.png"));
                 }else if(enDispositivo.getFoto().equalsIgnoreCase("Puerta")){
-                    gifFromAssets = new GifDrawable(manager.openFd("puerta.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("puerta.png"));
                 }else if(enDispositivo.getFoto().equalsIgnoreCase("Garaje")){
-                    gifFromAssets = new GifDrawable(manager.openFd("garaje.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("garaje.png"));
                 }else if(enDispositivo.getFoto().equalsIgnoreCase("Generico")){
-                    gifFromAssets = new GifDrawable(manager.openFd("onof.gif"));
-                    gifFromAssets.stop();
-                    imagen.setBackground(gifFromAssets);
+                    imagen.setImageBitmap(getBitmapFromAssets("onof.png"));
+                }
+                if(enDispositivo.getTipo().equalsIgnoreCase("Digital")){
+                    analogo.setVisibility(View.INVISIBLE);
+                }else if (enDispositivo.getTipo().equalsIgnoreCase("Analogo")){
+                    toggle.setVisibility(View.INVISIBLE);
                 }
 
             }catch (Exception e){
@@ -123,11 +125,48 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
                     onchecktoggle.itemCheck(buttonView,getPosition());
                 }
         }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if(onSeekBarItem!=null){
+                onSeekBarItem.itemProgressChanged(seekBar,progress,getPosition());
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            if(onSeekBarItem!=null){
+                onSeekBarItem.itemStartTrackingTouch(seekBar,getPosition());
+            }
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            if(onSeekBarItem!=null){
+                onSeekBarItem.itemStopTrackingTouch(seekBar,getPosition());
+            }
+        }
     }
 
     public interface onCheckertoggle{
         public void itemCheck(View view,int position);
 
+    }
+
+    public interface onSeekBar{
+        public void itemProgressChanged(View view,int progress,int position);
+        public void itemStartTrackingTouch(View view,int position);
+        public void itemStopTrackingTouch(View view,int position);
+
+    }
+
+    public Bitmap getBitmapFromAssets(String fileName) throws IOException {
+        AssetManager assetManager =contexto.getAssets();
+
+        InputStream istr = assetManager.open(fileName);
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+
+        return bitmap;
     }
 
 

@@ -3,6 +3,7 @@ package com.andres18160gmail.arduinobluetooth.Adaptadores;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.andres18160gmail.arduinobluetooth.Entidades.EnDispositivo;
 import com.andres18160gmail.arduinobluetooth.Entidades.EnTipo;
 import com.andres18160gmail.arduinobluetooth.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +70,7 @@ public class DispositivosAdapter extends BaseAdapter {
         LayoutInflater inflate= LayoutInflater.from(contexto);
         vista=inflate.inflate(R.layout.itemlist_dispositivos,null);
 
-        GifImageView imagen=(GifImageView)vista.findViewById(R.id.foto);
+        ImageView imagen=(ImageView)vista.findViewById(R.id.foto);
 
 
         TextView titulo=(TextView)vista.findViewById(R.id.txtviewTitle);
@@ -76,36 +79,21 @@ public class DispositivosAdapter extends BaseAdapter {
         String nombreCompleto=ListaObjetos.get(position).getNombre();
         titulo.setText(nombreCompleto);
         descripcion.setText("Control "+ ListaObjetos.get(position).getTipo() +" PIN: "+ListaObjetos.get(position).getPin());
-        AssetManager manager = contexto.getAssets();
-        GifDrawable gifFromAssets;
 
         try{
             if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Televisor")){
-                 gifFromAssets = new GifDrawable(manager.openFd("television.gif"));
-                gifFromAssets.stop();
-                 imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("televisor.png"));
             }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Ventilador")){
-                 gifFromAssets = new GifDrawable(manager.openFd("ventiladorgif.gif"));
-                gifFromAssets.stop();
-                 imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("ventilador.png"));
             }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Bombillo")){
-                 gifFromAssets = new GifDrawable(manager.openFd("bombillo.gif"));
-                gifFromAssets.stop();
-                 imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("bombillo.png"));
             }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Puerta")){
-                gifFromAssets = new GifDrawable(manager.openFd("puerta.gif"));
-                gifFromAssets.stop();
-                imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("puerta.png"));
             }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Garaje")){
-                gifFromAssets = new GifDrawable(manager.openFd("garaje.gif"));
-                gifFromAssets.stop();
-                imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("garaje.png"));
             }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Generico")){
-                gifFromAssets = new GifDrawable(manager.openFd("onof.gif"));
-                gifFromAssets.stop();
-                imagen.setBackground(gifFromAssets);
+                imagen.setImageBitmap(getBitmapFromAssets("onof.png"));
             }
-
 
 
         }catch (Exception e){
@@ -124,6 +112,15 @@ public class DispositivosAdapter extends BaseAdapter {
             cs=new CustomFilter();
         }
         return cs;
+    }
+
+    public Bitmap getBitmapFromAssets(String fileName) throws IOException {
+        AssetManager assetManager =contexto.getAssets();
+
+        InputStream istr = assetManager.open(fileName);
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+
+        return bitmap;
     }
 
     class CustomFilter extends Filter

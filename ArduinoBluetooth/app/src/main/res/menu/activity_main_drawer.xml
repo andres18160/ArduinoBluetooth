@@ -12,7 +12,11 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configurar dispositivos" />
-      <!--  <item
+        <item
+            android:id="@+id/nav_Conection"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Conectar" />
+        <!--  <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Import" />

@@ -9,7 +9,12 @@
     tools:context="com.andres18160gmail.arduinobluetooth.MainActivity"
     tools:showIn="@layout/app_bar_main"
     android:id="@+id/Contenedor">
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="Hola mundo"
+    android:gravity="center"
+    android:id="@+id/txtInformacioncontent"/>
 
 
 </android.support.constraint.ConstraintLayout>
