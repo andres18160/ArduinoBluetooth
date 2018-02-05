@@ -3,6 +3,7 @@ package com.andres18160gmail.arduinobluetooth.Clases;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.andres18160gmail.arduinobluetooth.Entidades.EnPinControl;
 import com.andres18160gmail.arduinobluetooth.Entidades.Temperatura;
@@ -12,6 +13,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -35,6 +37,8 @@ private boolean recibiendo = false;
 private InputStream aStream = null;
 private InputStreamReader aReader = null;
 private int contadorConexiones = 0;
+private  OutputStream mmOutStream;
+
 public interface MiCallback {
     void onTaskCompleted();
 
@@ -74,6 +78,7 @@ public interface MiCallback {
             mSocket = device.createRfcommSocketToServiceRecord(getSerialPortUUID());
             mSocket.connect();
             aStream = mSocket.getInputStream();
+            mmOutStream=mSocket.getOutputStream();
             aReader = new InputStreamReader(aStream);
             mBufferedReader = new BufferedReader(aReader);
 
@@ -131,6 +136,15 @@ se interroga al canal de comunicación por la temperatura*/
         close(aReader);
         close(aStream);
         close(mSocket);
+    }
+    public void write(String message) {
+        Log.d(TAG, "...Data to send: " + message + "...");
+        byte[] msgBuffer = message.getBytes();
+        try {
+            mmOutStream.write(msgBuffer);
+        } catch (IOException e) {
+            Log.d(TAG, "...Error data send: " + e.getMessage() + "...");
+        }
     }
 
     private UUID getSerialPortUUID() {

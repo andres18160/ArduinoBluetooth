@@ -72,6 +72,10 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
         this.onchecktoggle=onchecktoggle;
     }
 
+    public void setOnSeekBar(onSeekBar onSeekBarItem){
+        this.onSeekBarItem=onSeekBarItem;
+    }
+
     public class ViewHolderDispositivos extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
         TextView titulo;
         ToggleButton toggle;
@@ -122,7 +126,7 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(onchecktoggle!=null){
-                    onchecktoggle.itemCheck(buttonView,getPosition());
+                    onchecktoggle.itemCheck(buttonView,getPosition(),isChecked);
                 }
         }
 
@@ -149,7 +153,7 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
     }
 
     public interface onCheckertoggle{
-        public void itemCheck(View view,int position);
+        public void itemCheck(View view,int position,boolean isChecked);
 
     }
 

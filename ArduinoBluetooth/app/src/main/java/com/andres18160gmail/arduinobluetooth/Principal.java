@@ -39,7 +39,6 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final String NOMBRE_DISPOSITIVO_BT = "HC-06";//Nombre de neustro dispositivo bluetooth.
-    private MiAsyncTask tareaAsincrona;
 
     private int progressChangedValue = 0;
 
@@ -49,6 +48,8 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     DispositivosControlAdapter adapter;
     EnDispositivo dispositivo=new EnDispositivo();
     TextView txtInformacion;
+    BluetoothDevice arduino = null;
+    private MiAsyncTask tareaAsincrona;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,16 +72,104 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
         if(listDatos!=null){
             adapter=new DispositivosControlAdapter(listDatos);
             adapter.setOnchecktoggle(this);
+            adapter.setOnSeekBar(this);
             recycler.setAdapter(adapter);
         }
+
         return v;
     }
+    private void descubrirDispositivosBT() {
+/*
+Este método comprueba si nuestro dispositivo dispone de conectividad bluetooh.
+En caso afirmativo, si estuviera desctivada, intenta activarla.
+En caso negativo presenta un mensaje al usuario y sale de la aplicación.
+*/
+//Comprobamos que el dispositivo tiene adaptador bluetooth
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        txtInformacion.setText("Comprobando bluetooth");
+
+        if (mBluetoothAdapter != null) {
+
+//El dispositivo tiene adapatador BT. Ahora comprobamos que bt esta activado.
+
+            if (mBluetoothAdapter.isEnabled()) {
+//Esta activado. Obtenemos la lista de dispositivos BT emparejados con nuestro dispositivo android.
+
+                txtInformacion.setText("Obteniendo dispositivos emparejados, espere...");
+                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+//Si hay dispositivos emparejados
+                if (pairedDevices.size()> 0) {
+/*
+Recorremos los dispositivos emparejados hasta encontrar el
+adaptador BT del arduino, en este caso se llama HC-06
+*/
+                    for (BluetoothDevice device : pairedDevices) {
+                        if (device.getName().equalsIgnoreCase(NOMBRE_DISPOSITIVO_BT)) {
+                            arduino = device;
+                        }
+                    }
+
+                    if (arduino != null) {
+                        tareaAsincrona = new MiAsyncTask(this);
+                        tareaAsincrona.execute(arduino);
+                        txtInformacion.setText("Conectado!");
+                    } else {
+//No hemos encontrado nuestro dispositivo BT, es necesario emparejarlo antes de poder usarlo.
+//No hay ningun dispositivo emparejado. Salimos de la app.
+                        Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                        txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+                    }
+                } else {
+//No hay ningun dispositivo emparejado. Salimos de la app.
+                    Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                    txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+
+                }
+            } else {
+                muestraDialogoConfirmacionActivacion();
+            }
+        } else {
+// El dispositivo no soporta bluetooth. Mensaje al usuario y salimos de la app
+            Toast.makeText(getContext(), "El dispositivo no soporta comunicación por Bluetooth", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void muestraDialogoConfirmacionActivacion() {
+        new AlertDialog.Builder(getContext())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Activar Bluetooth")
+                .setMessage("BT esta desactivado. ¿Desea activarlo?")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//Intentamos activarlo con el siguiente intent.
+                        MensajeToast("Activando BT");
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                    }
+
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//Salimos de la app
+                        MensajeToast("El Bluetooth debe estar encendido!");
+                    }
+                })
+                .show();
+    }
 
     @Override
-    public void itemCheck(View view, int position) {
+    public void itemCheck(View view, int position,boolean isChecked) {
         dispositivo=adapter.getItem(position);
-        MensajeToast("Click");
+        if (isChecked) {
+            MensajeToast("Activo");
+            //tareaAsincrona.write(dispositivo.getPin());
+        } else {
+            MensajeToast("Inactivo");
+            //tareaAsincrona.write(dispositivo.getPin());
+        }
     }
 
 
@@ -109,7 +198,6 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     @Override
     public void itemProgressChanged(View view, int progress, int position) {
         progressChangedValue=progress;
-        MensajeToast("Progreso="+progressChangedValue);
     }
 
     @Override
@@ -120,5 +208,6 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     @Override
     public void itemStopTrackingTouch(View view, int position) {
         MensajeToast("Stop Progreso="+progressChangedValue);
+        tareaAsincrona.write(""+progressChangedValue);
     }
 }

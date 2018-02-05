@@ -29,7 +29,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/cerclebackgrounddark"
                 android:scaleType="fitXY" />
         </android.support.v7.widget.CardView>
 
