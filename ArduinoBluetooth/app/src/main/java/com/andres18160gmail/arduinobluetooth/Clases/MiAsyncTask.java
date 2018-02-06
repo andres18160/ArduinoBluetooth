@@ -99,10 +99,10 @@ se interroga al canal de comunicación por la temperatura*/
 //Recibimos la información en una cadena de la forma NombreDispositivo,XX
 //donde XX es la temperatura.
                         try {
-
+                            Log.e(TAG, "...Data to Receb: " + aString);
                             String s[] = aString.split(",");
                             temperatura.setPin(s[0]);
-                            temperatura.setEstado(s[1]);
+                            temperatura.setInformacion(s[1]);
                             publishProgress(temperatura);
                         } catch (Exception e) {
 //Si falla el formateo de los datos, no hacemos nada. Mostramos la excepción en la consola para
@@ -171,4 +171,6 @@ se interroga al canal de comunicación por la temperatura*/
     protected void onCancelled() {
         callback.onCancelled();
     }
+
+
 }
