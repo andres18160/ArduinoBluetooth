@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andres18160gmail.arduinobluetooth.Clases.MiAsyncTask;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.Set;
 
@@ -36,13 +40,13 @@ public class MainActivity extends AppCompatActivity
     private MiAsyncTask tareaAsincrona;
     BluetoothDevice arduino = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        txtInformacion=(TextView)findViewById(R.id.txtInformacioncontent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
        // getSupportFragmentManager().beginTransaction().replace(R.id.Contenedor,new Principal()).commit();
 
@@ -154,7 +160,7 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
             if (mBluetoothAdapter.isEnabled()) {
 //Esta activado. Obtenemos la lista de dispositivos BT emparejados con nuestro dispositivo android.
 
-                txtInformacion.setText("Obteniendo dispositivos emparejados, espere...");
+                MensajeToast("Obteniendo dispositivos emparejados, espere...");
                 Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 //Si hay dispositivos emparejados
                 if (pairedDevices.size()> 0) {
@@ -171,17 +177,17 @@ adaptador BT del arduino, en este caso se llama HC-06
                     if (arduino != null) {
                         //tareaAsincrona = new MiAsyncTask(getApplicationContext());
                         //tareaAsincrona.execute(arduino);
-                        txtInformacion.setText("Conectado!");
+                        MensajeToast("Conectado!");
                     } else {
 //No hemos encontrado nuestro dispositivo BT, es necesario emparejarlo antes de poder usarlo.
 //No hay ningun dispositivo emparejado. Salimos de la app.
                         Toast.makeText(getApplicationContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
-                        txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+                        MensajeToast("No hay dispositivos emparejados, por favor, empareje el arduino");
                     }
                 } else {
 //No hay ningun dispositivo emparejado. Salimos de la app.
                     Toast.makeText(getApplicationContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
-                    txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+                    MensajeToast("No hay dispositivos emparejados, por favor, empareje el arduino");
 
                 }
             } else {

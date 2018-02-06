@@ -35,4 +35,5 @@ dependencies {
     //Agregar libreria de la camara
     implementation 'com.frosquivel:magicalcamera:5.0.5'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+
 }
