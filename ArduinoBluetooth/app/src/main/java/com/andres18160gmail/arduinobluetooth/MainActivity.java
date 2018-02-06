@@ -25,10 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andres18160gmail.arduinobluetooth.Clases.MiAsyncTask;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+
 
 import java.util.Set;
 
