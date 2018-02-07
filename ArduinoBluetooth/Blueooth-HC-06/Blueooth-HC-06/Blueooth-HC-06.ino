@@ -1,9 +1,11 @@
 String cadena;  // incoming data
 int  LED = 13;      // LED pin
+int LED2=12;//LED Pin
  
 void setup() {
   Serial.begin(9600); // initialization
   pinMode(LED, OUTPUT);
+  pinMode(LED2, OUTPUT);
 }
  
 void loop() {
@@ -19,7 +21,9 @@ void loop() {
         break;
       }
     }
-
+    if(pin == "12") {
+        analogWrite(LED2, valor.toInt()); 
+    }
     if(pin == "13") {
       if(valor=="1"){
         digitalWrite(LED, HIGH); 

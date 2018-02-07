@@ -1,5 +1,6 @@
 package com.andres18160gmail.arduinobluetooth;
 
+import android.animation.ObjectAnimator;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -21,7 +22,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +52,7 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     private static final String NOMBRE_DISPOSITIVO_BT = "HC-06";//Nombre de neustro dispositivo bluetooth.
     private static final String TAG = "bluetooth2";
     private int progressChangedValue = 0;
-
+    private  View v;
     ArrayList<EnDispositivo> listDatos;
     RecyclerView recycler;
     TablaDispositivos cdDispositivos;
@@ -57,7 +60,6 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     EnDispositivo dispositivo=new EnDispositivo();
     TextView txtInformacion;
     BluetoothDevice arduino = null;
-    private MiAsyncTask tareaAsincrona;
 
 
     Handler h;
@@ -70,7 +72,8 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     // SPP UUID service
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     // MAC-address of Bluetooth module (you must edit this line)
-    private static String address = "00:15:FF:F2:19:5F";
+    private ObjectAnimator anim;
+    private Handler handler = new Handler();
 
 
 
@@ -85,12 +88,11 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_principal, container, false);
+        v= inflater.inflate(R.layout.fragment_principal, container, false);
         cdDispositivos=new TablaDispositivos(v.getContext());
         recycler=(RecyclerView)v.findViewById(R.id.RecyclerId);
         recycler.setLayoutManager(new LinearLayoutManager(v.getContext(),LinearLayoutManager.VERTICAL,false));
         txtInformacion=(TextView)v.findViewById(R.id.txtInformacion);
-        //recycler.setLayoutManager(new GridLayoutManager(v.getContext(),2));
         listDatos=cdDispositivos.GetListaDispositivos();
         if(listDatos!=null){
             adapter=new DispositivosControlAdapter(listDatos);
@@ -98,6 +100,8 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
             adapter.setOnSeekBar(this);
             recycler.setAdapter(adapter);
         }
+
+        recycler.setVisibility(View.INVISIBLE);
         h = new Handler() {
             public void handleMessage(android.os.Message msg) {
                 switch (msg.what) {
@@ -124,87 +128,123 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
         return v;
     }
     private void descubrirDispositivosBT() {
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                    // Update the progress bar and display the
+                    //current value in the text view
+                    handler.post(new Runnable() {
+                        public void run() {
+
+
+
+
+
+
+
+
 /*
 Este método comprueba si nuestro dispositivo dispone de conectividad bluetooh.
 En caso afirmativo, si estuviera desctivada, intenta activarla.
 En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 */
 //Comprobamos que el dispositivo tiene adaptador bluetooth
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        txtInformacion.setText("Comprobando bluetooth");
+                            MensajeToast("Comprobando bluetooth");
 
-        if (mBluetoothAdapter != null) {
+                            if (mBluetoothAdapter != null) {
 
 //El dispositivo tiene adapatador BT. Ahora comprobamos que bt esta activado.
 
-            if (mBluetoothAdapter.isEnabled()) {
+                                if (mBluetoothAdapter.isEnabled()) {
 //Esta activado. Obtenemos la lista de dispositivos BT emparejados con nuestro dispositivo android.
 
-                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                                    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 //Si hay dispositivos emparejados
-                if (pairedDevices.size()> 0) {
+                                    if (pairedDevices.size()> 0) {
 /*
 Recorremos los dispositivos emparejados hasta encontrar el
 adaptador BT del arduino, en este caso se llama HC-06
 */
-                    for (BluetoothDevice devices : pairedDevices) {
-                        if (devices.getName().equalsIgnoreCase(NOMBRE_DISPOSITIVO_BT)) {
-                            arduino = devices;
-                        }
-                    }
+                                        for (BluetoothDevice devices : pairedDevices) {
+                                            if (devices.getName().equalsIgnoreCase(NOMBRE_DISPOSITIVO_BT)) {
+                                                arduino = devices;
+                                            }
+                                        }
+                                        if (arduino != null) {
 
-                    if (arduino != null) {
+                                            try {
+                                                btSocket = createBluetoothSocket(arduino);
+                                            } catch (IOException e) {
+                                                MensajeToast("In onResume() and socket create failed: " + e.getMessage() + ".");
+                                            }
+                                            // Discovery is resource intensive.  Make sure it isn't going on
+                                            // when you attempt to connect and pass your message.
+                                            btAdapter.cancelDiscovery();
+                                            // Establish the connection.  This will block until it connects.
+                                            Log.d(TAG, "...Connecting...");
+                                            try {
+                                                btSocket.connect();
+                                                MensajeToast("...Connecting...");
+                                                Log.d(TAG, "....Connection ok...");
+                                                recycler.setVisibility(View.VISIBLE);
+                                            } catch (IOException e) {
+                                                try {
+                                                    btSocket.close();
+                                                } catch (IOException e2) {
+                                                    errorExit("Fatal Error", "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
+                                                }
+                                            }
 
-                        try {
-                            btSocket = createBluetoothSocket(arduino);
-                        } catch (IOException e) {
-                            MensajeToast("In onResume() and socket create failed: " + e.getMessage() + ".");
-                        }
-
-                        // Discovery is resource intensive.  Make sure it isn't going on
-                        // when you attempt to connect and pass your message.
-                        btAdapter.cancelDiscovery();
-
-                        // Establish the connection.  This will block until it connects.
-                        Log.d(TAG, "...Connecting...");
-                        try {
-                            btSocket.connect();
-                            txtInformacion.setText("...Connecting...");
-                            Log.d(TAG, "....Connection ok...");
-                        } catch (IOException e) {
-                            try {
-                                btSocket.close();
-                            } catch (IOException e2) {
-                                errorExit("Fatal Error", "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
-                            }
-                        }
-
-                        // Create a data stream so we can talk to server.
-                        Log.d(TAG, "...Create Socket...");
-
-                        mConnectedThread = new ConnectedThread(btSocket);
-                        mConnectedThread.start();
-
-                    } else {
+                                            // Create a data stream so we can talk to server.
+                                            Log.d(TAG, "...Create Socket...");
+                                            mConnectedThread = new ConnectedThread(btSocket);
+                                            mConnectedThread.start();
+                                        } else {
 //No hemos encontrado nuestro dispositivo BT, es necesario emparejarlo antes de poder usarlo.
 //No hay ningun dispositivo emparejado. Salimos de la app.
-                        Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
-                        txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
-                    }
-                } else {
+                                            Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                                           // txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+                                        }
+                                    } else {
 //No hay ningun dispositivo emparejado. Salimos de la app.
-                    Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
-                    txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
+                                        Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                                        //txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
 
-                }
-            } else {
-                muestraDialogoConfirmacionActivacion();
-            }
-        } else {
+                                    }
+                                } else {
+                                    muestraDialogoConfirmacionActivacion();
+                                }
+                            } else {
 // El dispositivo no soporta bluetooth. Mensaje al usuario y salimos de la app
-            Toast.makeText(getContext(), "El dispositivo no soporta comunicación por Bluetooth", Toast.LENGTH_LONG).show();
-        }
+                                Toast.makeText(getContext(), "El dispositivo no soporta comunicación por Bluetooth", Toast.LENGTH_LONG).show();
+                            }
+
+
+
+
+
+
+                        }//Final del RUN
+                    });
+                    try {
+                        // Sleep for 200 milliseconds.
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }).start();
+
+
+
+
+
+
+
     }
 
 
@@ -312,8 +352,9 @@ adaptador BT del arduino, en este caso se llama HC-06
 
     @Override
     public void itemStopTrackingTouch(View view, int position) {
+        dispositivo=adapter.getItem(position);
         MensajeToast("Stop Progreso="+progressChangedValue);
-        tareaAsincrona.write(""+progressChangedValue);
+        mConnectedThread.write(dispositivo.getPin()+":"+progressChangedValue);
     }
     private class ConnectedThread extends Thread {
         private final InputStream mmInStream;
