@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
-        android:text="RecyclerView"
+        android:text="Conecte el dispositivo"
         android:textSize="30dp" />
 
     <android.support.v7.widget.RecyclerView

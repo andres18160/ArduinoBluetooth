@@ -129,21 +129,6 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
     }
     private void descubrirDispositivosBT() {
 
-        new Thread(new Runnable() {
-            public void run() {
-
-                    // Update the progress bar and display the
-                    //current value in the text view
-                    handler.post(new Runnable() {
-                        public void run() {
-
-
-
-
-
-
-
-
 /*
 Este método comprueba si nuestro dispositivo dispone de conectividad bluetooh.
 En caso afirmativo, si estuviera desctivada, intenta activarla.
@@ -154,6 +139,7 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 
                             MensajeToast("Comprobando bluetooth");
 
+
                             if (mBluetoothAdapter != null) {
 
 //El dispositivo tiene adapatador BT. Ahora comprobamos que bt esta activado.
@@ -161,8 +147,7 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
                                 if (mBluetoothAdapter.isEnabled()) {
 //Esta activado. Obtenemos la lista de dispositivos BT emparejados con nuestro dispositivo android.
 
-                                    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-//Si hay dispositivos emparejados
+                                    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();//Si hay dispositivos emparejados
                                     if (pairedDevices.size()> 0) {
 /*
 Recorremos los dispositivos emparejados hasta encontrar el
@@ -186,12 +171,15 @@ adaptador BT del arduino, en este caso se llama HC-06
                                             // Establish the connection.  This will block until it connects.
                                             Log.d(TAG, "...Connecting...");
                                             try {
-                                                btSocket.connect();
+
                                                 MensajeToast("...Connecting...");
+                                                btSocket.connect();
+                                                txtInformacion.setText("Conectado");
                                                 Log.d(TAG, "....Connection ok...");
                                                 recycler.setVisibility(View.VISIBLE);
                                             } catch (IOException e) {
                                                 try {
+                                                    MensajeToast("...No se logro realizar comunicación con el dispositivo...");
                                                     btSocket.close();
                                                 } catch (IOException e2) {
                                                     errorExit("Fatal Error", "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
@@ -221,30 +209,6 @@ adaptador BT del arduino, en este caso se llama HC-06
 // El dispositivo no soporta bluetooth. Mensaje al usuario y salimos de la app
                                 Toast.makeText(getContext(), "El dispositivo no soporta comunicación por Bluetooth", Toast.LENGTH_LONG).show();
                             }
-
-
-
-
-
-
-                        }//Final del RUN
-                    });
-                    try {
-                        // Sleep for 200 milliseconds.
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-            }
-        }).start();
-
-
-
-
-
-
-
     }
 
 
@@ -288,7 +252,7 @@ adaptador BT del arduino, en este caso se llama HC-06
     @Override
     public void onResume() {
         super.onResume();
-        descubrirDispositivosBT();
+          descubrirDispositivosBT();
     }
     @Override
     public void onPause() {
@@ -302,10 +266,11 @@ adaptador BT del arduino, en este caso se llama HC-06
             errorExit("Fatal Error", "In onPause() and failed to close socket." + e2.getMessage() + ".");
         }
     }
-    private void MensajeToast(String mensaje){
+    private void MensajeToast(final String mensaje){
         Toast toast = Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
+
     }
     private void checkBTState() {
         // Check for Bluetooth support and then check to make sure it is turned on

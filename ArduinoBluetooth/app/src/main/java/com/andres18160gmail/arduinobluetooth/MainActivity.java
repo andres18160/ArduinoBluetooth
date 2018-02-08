@@ -31,7 +31,6 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TextView txtInformacion;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final String NOMBRE_DISPOSITIVO_BT = "HC-06";//Nombre de neustro dispositivo bluetooth.
     private MiAsyncTask tareaAsincrona;
@@ -148,7 +147,7 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 //Comprobamos que el dispositivo tiene adaptador bluetooth
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        txtInformacion.setText("Comprobando bluetooth");
+        MensajeToast("Comprobando bluetooth");
 
         if (mBluetoothAdapter != null) {
 
@@ -174,7 +173,7 @@ adaptador BT del arduino, en este caso se llama HC-06
                     if (arduino != null) {
                         //tareaAsincrona = new MiAsyncTask(getApplicationContext());
                         //tareaAsincrona.execute(arduino);
-                        MensajeToast("Conectado!");
+                       // MensajeToast("Conectado!");
                     } else {
 //No hemos encontrado nuestro dispositivo BT, es necesario emparejarlo antes de poder usarlo.
 //No hay ningun dispositivo emparejado. Salimos de la app.
