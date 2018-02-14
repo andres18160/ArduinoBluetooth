@@ -261,7 +261,10 @@ adaptador BT del arduino, en este caso se llama HC-06
         Log.d(TAG, "...In onPause()...");
 
         try     {
-            btSocket.close();
+            if(btSocket!=null){
+                btSocket.close();
+            }
+
         } catch (IOException e2) {
             errorExit("Fatal Error", "In onPause() and failed to close socket." + e2.getMessage() + ".");
         }
