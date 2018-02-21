@@ -8,6 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.andres18160gmail.arduinobluetooth.MainActivity"
     tools:showIn="@layout/app_bar_main"
+    android:background="@drawable/fondo2"
     android:id="@+id/Contenedor">
 
 

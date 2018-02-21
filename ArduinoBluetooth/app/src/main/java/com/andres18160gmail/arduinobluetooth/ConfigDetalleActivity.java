@@ -250,8 +250,9 @@ public class ConfigDetalleActivity extends AppCompatActivity {
 
         try{
 
-
-
+            if(dispositivo.getTipo()==null){
+                dispositivo.setTipo("Digital");
+            }
             if(txtNombre.getText().toString().trim().isEmpty()){
                 input_nombre.setErrorEnabled(true);
                 input_nombre.setError(getResources().getText(R.string.err_msg_nombre));

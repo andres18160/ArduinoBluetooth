@@ -1,64 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:background="@drawable/fondo2"
+    android:orientation="vertical"
     tools:context="com.andres18160gmail.arduinobluetooth.ConfigDetalleActivity">
 
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Agregar dispositivo"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
 
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_nombre"
+        <EditText
+            android:id="@+id/txtNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="@string/txtNombre"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/txtNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/textViewPin"
-                android:layout_alignParentStart="true"
-                android:ems="10"
-                android:hint="@string/txtNombre"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+    </android.support.design.widget.TextInputLayout>
 
-        </android.support.design.widget.TextInputLayout>
-
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <TextView
         android:id="@+id/textViewPin"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/input_nombre"
-        android:layout_marginTop="32dp"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:text="PIN:"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinnerPins"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textViewPin"
         android:layout_toEndOf="@+id/textViewPin"
+        android:layout_marginTop="10dp"
         android:spinnerMode="dialog" />
+</LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textViewPin"
-        android:layout_marginTop="19dp"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:text="Tipo:"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -66,12 +81,13 @@
 
     <Spinner
         android:id="@+id/spinnerTipos"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"
+        android:layout_marginTop="10dp"
         android:textAlignment="center" />
-
+    </LinearLayout>
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -97,16 +113,39 @@
             android:buttonTint="@color/colorPrimaryDark"
             android:onClick="onRadioButtonClicked"
             android:text="Analogo"
-            android:textStyle="bold" />
-    </RadioGroup>
+            android:textStyle="bold"
+            android:background="@drawable/rbtn_selector"
 
+
+            />
+    </RadioGroup>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btnActualizar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/shape_default"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:onClick="Actualizar"
+        android:text=" Actualizar "
+        android:textColor="@android:color/white"
+        app:spinning_bar_color="#fff"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="4dp" />
 
     <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
         android:id="@+id/btnGuardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnActualizar"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="19dp"
         android:background="@drawable/shape_default"
         android:backgroundTint="@color/colorPrimaryDark"
@@ -118,29 +157,13 @@
         app:spinning_bar_width="4dp" />
 
     <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-        android:id="@+id/btnActualizar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnEliminar"
-        android:layout_alignBottom="@+id/btnEliminar"
-        android:layout_marginStart="22dp"
-        android:layout_toEndOf="@+id/textView2"
-        android:background="@drawable/shape_default"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:onClick="Actualizar"
-        android:text=" Actualizar "
-        android:textColor="@android:color/white"
-        app:spinning_bar_color="#fff"
-        app:spinning_bar_padding="6dp"
-        app:spinning_bar_width="4dp" />
-
-    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
         android:id="@+id/btnEliminar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="89dp"
-        android:layout_marginStart="49dp"
+
         android:layout_toEndOf="@+id/btnActualizar"
         android:background="@drawable/shape_default"
         android:backgroundTint="@android:color/holo_red_dark"
@@ -150,6 +173,9 @@
         app:spinning_bar_color="#fff"
         app:spinning_bar_padding="6dp"
         app:spinning_bar_width="4dp" />
+</LinearLayout>
 
 
-</RelativeLayout>
+
+
+</LinearLayout>
