@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+           // super.onBackPressed();
         }
     }
 
@@ -83,9 +83,27 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id==R.id.Salir){
+            final AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage(R.string.msCerrarApp);
+            builder.setCancelable(true);
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    finish();
+                }
+            });
+            AlertDialog alertDialog=builder.create();
+            alertDialog.show();
             return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -123,10 +141,10 @@ Por lo tanto invocamos aqui al método que activa el BT y crea la tarea asincron
             }
 
         }
-        if (id == R.id.nav_Conection) {
+      /*  if (id == R.id.nav_Conection) {
             descubrirDispositivosBT();
 
-        }
+        }*/
         if(FragmentoSeleccionado){
             getSupportFragmentManager().beginTransaction().replace(R.id.Contenedor,fragment).commit();
         }
@@ -224,5 +242,9 @@ adaptador BT del arduino, en este caso se llama HC-06
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
     }
+
+
+
+
 
 }

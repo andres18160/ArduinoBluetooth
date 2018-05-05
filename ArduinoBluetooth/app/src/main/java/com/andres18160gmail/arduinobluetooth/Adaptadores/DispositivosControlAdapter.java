@@ -99,17 +99,17 @@ public class DispositivosControlAdapter extends RecyclerView.Adapter<Dispositivo
             GifDrawable gifFromAssets;
 
             try{
-                if(enDispositivo.getFoto().equalsIgnoreCase("Televisor")){
-                    imagen.setImageBitmap(getBitmapFromAssets("televisor.png"));
-                }else if(enDispositivo.getFoto().equalsIgnoreCase("Ventilador")){
+                if(enDispositivo.getFoto().equalsIgnoreCase("Televisor") || enDispositivo.getFoto().equalsIgnoreCase("TV")){
+                    imagen.setImageBitmap(getBitmapFromAssets("televisor.png") );
+                }else if(enDispositivo.getFoto().equalsIgnoreCase("Ventilador") || enDispositivo.getFoto().equalsIgnoreCase("Fan")){
                     imagen.setImageBitmap(getBitmapFromAssets("ventilador.png"));
-                }else if(enDispositivo.getFoto().equalsIgnoreCase("Bombillo")){
+                }else if(enDispositivo.getFoto().equalsIgnoreCase("Bombillo")  || enDispositivo.getFoto().equalsIgnoreCase("Light bulb")){
                     imagen.setImageBitmap(getBitmapFromAssets("bombillo.png"));
-                }else if(enDispositivo.getFoto().equalsIgnoreCase("Puerta")){
+                }else if(enDispositivo.getFoto().equalsIgnoreCase("Puerta") || enDispositivo.getFoto().equalsIgnoreCase("Door")){
                     imagen.setImageBitmap(getBitmapFromAssets("puerta.png"));
-                }else if(enDispositivo.getFoto().equalsIgnoreCase("Garaje")){
+                }else if(enDispositivo.getFoto().equalsIgnoreCase("Garaje") || enDispositivo.getFoto().equalsIgnoreCase("Garage")){
                     imagen.setImageBitmap(getBitmapFromAssets("garaje.png"));
-                }else if(enDispositivo.getFoto().equalsIgnoreCase("Generico")){
+                }else if(enDispositivo.getFoto().equalsIgnoreCase("Generico") || enDispositivo.getFoto().equalsIgnoreCase("Generic")){
                     imagen.setImageBitmap(getBitmapFromAssets("onof.png"));
                 }
                 if(enDispositivo.getTipo().equalsIgnoreCase("Digital")){

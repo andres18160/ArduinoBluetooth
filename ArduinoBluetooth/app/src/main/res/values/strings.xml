@@ -41,6 +41,25 @@
     <string name="btnEnviarInfoText">Enviar Información</string>
     <string name="txt_ip_server">Ip Servidor</string>
     <string name="txt_port_server">Puerto Servidor</string>
-    <string name="title_activity_config__dispositivo__detalle">Config_Dispositivo_DetalleActivity
-    </string>
+    <string name="title_activity_config__dispositivo__detalle">Config_Dispositivo_DetalleActivity</string>
+    <string name="txtAgregarDispositivo">Agregar dispositivo</string>
+    <string name="txtCategoria">Categoria:</string>
+    <string name="txtDigital">Digital</string>
+    <string name="txtAnalogo">Analogo</string>
+    <string name="msDispositivoRegistrado">Dispositivo Registrado</string>
+    <string name="msErrorRegistro">Ocurrio un error realizando el registro</string>
+    <string name="msDispositivoEliminado">Dispositivo Eliminado</string>
+    <string name="msErrorOperacion">Ocurrio un error realizando la operación</string>
+    <string name="msDispositivoActualizado">Dispositivo Actualizado</string>
+    <string name="msComprobandobluetooth">Comprobando bluetooth</string>
+    <string name="err_NoSeLogroComunicacion">No se logro realizar comunicación con el dispositivo</string>
+    <string name="err_emperejarDispositivo">No hay dispositivos emparejados, por favor, empareje el HC-06</string>
+    <string name="err_comunicacionNoSoportada">El dispositivo no soporta comunicación por Bluetooth</string>
+    <string name="msActivarBluetooth">Activar Bluetooth</string>
+    <string name="mscuestionActivarBluetooth">BT esta desactivado. ¿Desea activarlo?</string>
+    <string name="msActivandoBluetooth">Activando Bluetooth</string>
+    <string name="msBluetoothEncendido">El Bluetooth debe estar encendido!</string>
+    <string name="subtitle">Sistema de control dinamico Bluetooth</string>
+    <string name="iniciarControl">Iniciar Control</string>
+    <string name="ConfigurarDIspositivos">Configurar Dispositivos</string>
 </resources>

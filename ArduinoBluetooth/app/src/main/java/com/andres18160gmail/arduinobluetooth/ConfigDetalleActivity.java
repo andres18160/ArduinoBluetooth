@@ -28,6 +28,8 @@ import com.andres18160gmail.arduinobluetooth.Adaptadores.TipoDispositivoAdapter;
 import com.andres18160gmail.arduinobluetooth.Datos.TablaDispositivos;
 import com.andres18160gmail.arduinobluetooth.Entidades.EnDispositivo;
 import com.andres18160gmail.arduinobluetooth.Entidades.EnTipo;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +48,9 @@ public class ConfigDetalleActivity extends AppCompatActivity {
     CircularProgressButton btnGuardar,btnActualizar,btnEliminar;
     EditText txtNombre;
     RadioButton checkDigital,checkAnalogo;
-
     private Vibrator vib;
     Animation animShake;
+    private AdView mAdView;
 
 
 
@@ -56,6 +58,10 @@ public class ConfigDetalleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_detalle);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         btnGuardar=(CircularProgressButton)findViewById(R.id.btnGuardar);
         btnActualizar=(CircularProgressButton)findViewById(R.id.btnActualizar);
         btnEliminar=(CircularProgressButton)findViewById(R.id.btnEliminar);
@@ -151,7 +157,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                     if(s.equals("ok")){
                         btnGuardar.doneLoadingAnimation(Color.parseColor("#333639"), BitmapFactory.decodeResource(getResources(),R.drawable.ic_done_white_48dp));
                         if(cdDispositivo.GuardarDispositivo(dispositivo)){
-                            MensajeToast("Dispositivo Registrado");
+                            MensajeToast(getResources().getString(R.string.msDispositivoRegistrado));
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -159,7 +165,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                             }
                             onBackPressed();
                         }else{
-                            MensajeToast("Ocurrio un error insertando el registro");
+                            MensajeToast(getResources().getString(R.string.msErrorRegistro));
                         }
                     }
                 }
@@ -188,7 +194,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                     if(s.equals("ok")){
                         btnEliminar.doneLoadingAnimation(Color.parseColor("#333639"), BitmapFactory.decodeResource(getResources(),R.drawable.ic_done_white_48dp));
                         if(cdDispositivo.EliminarDispositivo(""+dispositivo.getId())){
-                            MensajeToast("Dispositivo Eliminado");
+                            MensajeToast(getResources().getString(R.string.msDispositivoEliminado));
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -196,7 +202,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                             }
                             onBackPressed();
                         }else{
-                            MensajeToast("Ocurrio un error realizando la operación");
+                            MensajeToast(getResources().getString(R.string.msErrorOperacion));
                         }
                     }
                 }
@@ -224,7 +230,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                     if(s.equals("ok")){
                         if(cdDispositivo.ActualizarDispositivo(dispositivo)){
                             btnActualizar.doneLoadingAnimation(Color.parseColor("#333639"), BitmapFactory.decodeResource(getResources(),R.drawable.ic_done_white_48dp));
-                            MensajeToast("Dispositivo Actualizado");
+                            MensajeToast(getResources().getString(R.string.msDispositivoActualizado));
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -232,7 +238,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
                             }
                             onBackPressed();
                         }else{
-                            MensajeToast("Ocurrio un error realizando la operación");
+                            MensajeToast(getResources().getString(R.string.msErrorOperacion));
                         }
                     }
                 }

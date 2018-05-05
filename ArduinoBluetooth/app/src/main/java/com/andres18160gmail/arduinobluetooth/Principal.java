@@ -1,6 +1,7 @@
 package com.andres18160gmail.arduinobluetooth;
 
 import android.animation.ObjectAnimator;
+import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -29,16 +30,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andres18160gmail.arduinobluetooth.Adaptadores.DispositivosControlAdapter;
+import com.andres18160gmail.arduinobluetooth.Clases.DialogPaired;
 import com.andres18160gmail.arduinobluetooth.Clases.MiAsyncTask;
 import com.andres18160gmail.arduinobluetooth.Datos.TablaDispositivos;
 import com.andres18160gmail.arduinobluetooth.Entidades.EnDispositivo;
 import com.andres18160gmail.arduinobluetooth.Entidades.EnPinControl;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,10 +51,11 @@ import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class Principal extends Fragment implements DispositivosControlAdapter.onCheckertoggle,DispositivosControlAdapter.onSeekBar {
+public class Principal extends Fragment implements DialogPaired.SelectDevideDialog, DispositivosControlAdapter.onCheckertoggle,DispositivosControlAdapter.onSeekBar {
 
+    private AdView mAdView;
     private static final int REQUEST_ENABLE_BT = 1;
-    private static final String NOMBRE_DISPOSITIVO_BT = "HC-06";//Nombre de neustro dispositivo bluetooth.
+    private String NOMBRE_DISPOSITIVO_BT ="";    //"HC-06";//Nombre de neustro dispositivo bluetooth.
     private static final String TAG = "bluetooth2";
     private int progressChangedValue = 0;
     private  View v;
@@ -89,6 +95,11 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v= inflater.inflate(R.layout.fragment_principal, container, false);
+
+        mAdView =v.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         cdDispositivos=new TablaDispositivos(v.getContext());
         recycler=(RecyclerView)v.findViewById(R.id.RecyclerId);
         recycler.setLayoutManager(new LinearLayoutManager(v.getContext(),LinearLayoutManager.VERTICAL,false));
@@ -122,6 +133,7 @@ public class Principal extends Fragment implements DispositivosControlAdapter.on
             };
         };
 
+
         btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
         checkBTState();
         //descubrirDispositivosBT();
@@ -137,7 +149,7 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 //Comprobamos que el dispositivo tiene adaptador bluetooth
                             BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-                            MensajeToast("Comprobando bluetooth");
+                            MensajeToast(getResources().getString(R.string.msComprobandobluetooth));
 
 
                             if (mBluetoothAdapter != null) {
@@ -149,6 +161,11 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 
                                     Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();//Si hay dispositivos emparejados
                                     if (pairedDevices.size()> 0) {
+                                        List<BluetoothDevice> devicess=new ArrayList<>();
+                                        devicess.addAll(pairedDevices);
+                                        DialogPaired dialogPaired=new DialogPaired();
+                                        dialogPaired.setDevices(devicess);
+                                        dialogPaired.show(getActivity().getFragmentManager(),"dispvinc");
 /*
 Recorremos los dispositivos emparejados hasta encontrar el
 adaptador BT del arduino, en este caso se llama HC-06
@@ -163,7 +180,7 @@ adaptador BT del arduino, en este caso se llama HC-06
                                             try {
                                                 btSocket = createBluetoothSocket(arduino);
                                             } catch (IOException e) {
-                                                MensajeToast("In onResume() and socket create failed: " + e.getMessage() + ".");
+                                              //  MensajeToast("In onResume() and socket create failed: " + e.getMessage() + ".");
                                             }
                                             // Discovery is resource intensive.  Make sure it isn't going on
                                             // when you attempt to connect and pass your message.
@@ -179,7 +196,7 @@ adaptador BT del arduino, en este caso se llama HC-06
                                                 recycler.setVisibility(View.VISIBLE);
                                             } catch (IOException e) {
                                                 try {
-                                                    MensajeToast("...No se logro realizar comunicación con el dispositivo...");
+                                                    MensajeToast(getResources().getString(R.string.err_NoSeLogroComunicacion));
                                                     btSocket.close();
                                                 } catch (IOException e2) {
                                                     errorExit("Fatal Error", "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
@@ -193,12 +210,12 @@ adaptador BT del arduino, en este caso se llama HC-06
                                         } else {
 //No hemos encontrado nuestro dispositivo BT, es necesario emparejarlo antes de poder usarlo.
 //No hay ningun dispositivo emparejado. Salimos de la app.
-                                            Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getContext(), getResources().getString(R.string.err_emperejarDispositivo), Toast.LENGTH_LONG).show();
                                            // txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
                                         }
                                     } else {
 //No hay ningun dispositivo emparejado. Salimos de la app.
-                                        Toast.makeText(getContext(), "No hay dispositivos emparejados, por favor, empareje el arduino", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), getResources().getString(R.string.err_emperejarDispositivo), Toast.LENGTH_LONG).show();
                                         //txtInformacion.setText("No hay dispositivos emparejados, por favor, empareje el arduino");
 
                                     }
@@ -207,7 +224,7 @@ adaptador BT del arduino, en este caso se llama HC-06
                                 }
                             } else {
 // El dispositivo no soporta bluetooth. Mensaje al usuario y salimos de la app
-                                Toast.makeText(getContext(), "El dispositivo no soporta comunicación por Bluetooth", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), getResources().getString(R.string.err_comunicacionNoSoportada), Toast.LENGTH_LONG).show();
                             }
     }
 
@@ -215,13 +232,13 @@ adaptador BT del arduino, en este caso se llama HC-06
     private void muestraDialogoConfirmacionActivacion() {
         new AlertDialog.Builder(getContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Activar Bluetooth")
-                .setMessage("BT esta desactivado. ¿Desea activarlo?")
+                .setTitle(getResources().getString(R.string.msActivarBluetooth))
+                .setMessage(getResources().getString(R.string.mscuestionActivarBluetooth))
                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //Intentamos activarlo con el siguiente intent.
-                        MensajeToast("Activando BT");
+                        MensajeToast(getResources().getString(R.string.msActivandoBluetooth));
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                     }
@@ -231,7 +248,7 @@ adaptador BT del arduino, en este caso se llama HC-06
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //Salimos de la app
-                        MensajeToast("El Bluetooth debe estar encendido!");
+                        MensajeToast(getResources().getString(R.string.msBluetoothEncendido));
                     }
                 })
                 .show();
@@ -324,6 +341,12 @@ adaptador BT del arduino, en este caso se llama HC-06
         MensajeToast("Stop Progreso="+progressChangedValue);
         mConnectedThread.write(dispositivo.getPin()+":"+progressChangedValue);
     }
+
+    @Override
+    public void onFinisSelectDevideDialog(String inputText) {
+        NOMBRE_DISPOSITIVO_BT=inputText;
+    }
+
     private class ConnectedThread extends Thread {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;

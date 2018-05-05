@@ -38,4 +38,27 @@
     <string name="btnInformeText">Operation records</string>
     <string name="btnEnviarInfo">Send</string>
     <string name="btnEnviarInfoText">Send information</string>
+    <string name="txt_ip_server">Ip Servidor</string>
+    <string name="txt_port_server">Puerto Servidor</string>
+    <string name="title_activity_config__dispositivo__detalle">Config_Dispositivo_DetalleActivity</string>
+    <string name="txtAgregarDispositivo">Add device</string>
+    <string name="txtCategoria">Category:</string>
+    <string name="txtDigital">Digital</string>
+    <string name="txtAnalogo">Analogous</string>
+    <string name="msDispositivoRegistrado">Registered Device</string>
+    <string name="msErrorRegistro">An error occurred while performing the registration</string>
+    <string name="msDispositivoEliminado">Eliminated device</string>
+    <string name="msErrorOperacion">An error occurred performing the operation</string>
+    <string name="msDispositivoActualizado">Updated Device</string>
+    <string name="msComprobandobluetooth">Checking bluetooth</string>
+    <string name="err_NoSeLogroComunicacion">Unable to communicate with the device</string>
+    <string name="err_emperejarDispositivo">No devices paired, please match the HC-06</string>
+    <string name="err_comunicacionNoSoportada">The device does not support Bluetooth communication</string>
+    <string name="msActivarBluetooth">Activate Bluetooth</string>
+    <string name="mscuestionActivarBluetooth">BT is disabled. Do you want to activate it?</string>
+    <string name="msActivandoBluetooth">Activating Bluetooth</string>
+    <string name="msBluetoothEncendido">Bluetooth must be on!</string>
+    <string name="subtitle">Bluetooth dynamic control system</string>
+    <string name="iniciarControl">Start Control</string>
+    <string name="ConfigurarDIspositivos">Configure Devices</string>
 </resources>

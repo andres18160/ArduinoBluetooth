@@ -81,17 +81,17 @@ public class DispositivosAdapter extends BaseAdapter {
         descripcion.setText("Control "+ ListaObjetos.get(position).getTipo() +" PIN: "+ListaObjetos.get(position).getPin());
 
         try{
-            if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Televisor")){
+            if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Televisor") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("TV")){
                 imagen.setImageBitmap(getBitmapFromAssets("televisor.png"));
-            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Ventilador")){
+            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Ventilador") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("Fan")){
                 imagen.setImageBitmap(getBitmapFromAssets("ventilador.png"));
-            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Bombillo")){
+            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Bombillo") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("Light bulb")){
                 imagen.setImageBitmap(getBitmapFromAssets("bombillo.png"));
-            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Puerta")){
+            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Puerta") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("Door")){
                 imagen.setImageBitmap(getBitmapFromAssets("puerta.png"));
-            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Garaje")){
+            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Garaje") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("Garage")){
                 imagen.setImageBitmap(getBitmapFromAssets("garaje.png"));
-            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Generico")){
+            }else if(ListaObjetos.get(position).getFoto().equalsIgnoreCase("Generico") || ListaObjetos.get(position).getFoto().equalsIgnoreCase("Generic")){
                 imagen.setImageBitmap(getBitmapFromAssets("onof.png"));
             }
 
