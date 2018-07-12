@@ -1,11 +1,14 @@
 package com.andres18160gmail.arduinobluetooth.Clases;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -15,13 +18,12 @@ import java.util.List;
  */
 
 public class DialogPaired extends DialogFragment {
-
-
-    public interface SelectDevideDialog {
-        void onFinisSelectDevideDialog(String inputText);
-    }
-
+    private SelectDialog mlistener;
     private List<BluetoothDevice> devices;
+
+
+
+
 
     public void setDevices(List<BluetoothDevice> devices){
         this.devices=devices;
@@ -31,7 +33,6 @@ public class DialogPaired extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder buider=new AlertDialog.Builder(getActivity());
-
         CharSequence[] titles=new CharSequence[devices.size()];
         for (int i=0;i<devices.size();i++){
             titles[i]=devices.get(i).getName();
@@ -40,13 +41,40 @@ public class DialogPaired extends DialogFragment {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getActivity(),"dispositivo pulsado:"+devices.get(i).getName(),Toast.LENGTH_SHORT).show();
-                SelectDevideDialog listener = (SelectDevideDialog) getTargetFragment();
-                listener.onFinisSelectDevideDialog(devices.get(i).getName());
-                dismiss();
+
+                try {
+                    Log.d("ERROR_DIALOG", devices.get(i).getName());
+
+                    mlistener.onFinisSelectDialog(devices.get(i).getName());
+                    dismiss();
+                } catch (Exception e) {
+                    Log.d("ERROR_DIALOG", e.getMessage());
+                    //e.printStackTrace();
+                }
+
             }
         });
 
         return buider.create();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mlistener = (SelectDialog) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement dialogDoneistener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mlistener = null;
+    }
+    public interface SelectDialog {
+        void onFinisSelectDialog(String inputText);
     }
 }

@@ -11,25 +11,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <TextView
-        android:id="@+id/txtInformacion"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        android:text="Conecte el dispositivo"
-        android:textSize="30dp" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewPin"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtdevice"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+
+    <Spinner
+        android:id="@+id/spinnerDevice"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_marginEnd="7dp"
+        android:layout_toStartOf="@+id/btnConectar"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/btnConectar"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_weight="1"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Conectar"
+        android:textColor="#FFFFFF" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtInformacion"
-        android:layout_marginBottom="69dp"
+        android:layout_below="@+id/btnConectar"
         android:paddingLeft="20dp"
         android:paddingRight="10dp" />
 

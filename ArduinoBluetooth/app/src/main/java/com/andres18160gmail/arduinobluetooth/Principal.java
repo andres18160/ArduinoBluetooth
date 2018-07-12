@@ -24,8 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +54,7 @@ import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class Principal extends Fragment implements DialogPaired.SelectDevideDialog, DispositivosControlAdapter.onCheckertoggle,DispositivosControlAdapter.onSeekBar {
+public class Principal extends Fragment implements DialogPaired.SelectDialog, DispositivosControlAdapter.onCheckertoggle,DispositivosControlAdapter.onSeekBar {
 
     private AdView mAdView;
     private static final int REQUEST_ENABLE_BT = 1;
@@ -66,6 +69,8 @@ public class Principal extends Fragment implements DialogPaired.SelectDevideDial
     EnDispositivo dispositivo=new EnDispositivo();
     TextView txtInformacion;
     BluetoothDevice arduino = null;
+    Spinner spinnerDevice;
+    Button btnConectar;
 
 
     Handler h;
@@ -80,6 +85,7 @@ public class Principal extends Fragment implements DialogPaired.SelectDevideDial
     // MAC-address of Bluetooth module (you must edit this line)
     private ObjectAnimator anim;
     private Handler handler = new Handler();
+    private List<BluetoothDevice> devicess;
 
 
 
@@ -103,14 +109,31 @@ public class Principal extends Fragment implements DialogPaired.SelectDevideDial
         cdDispositivos=new TablaDispositivos(v.getContext());
         recycler=(RecyclerView)v.findViewById(R.id.RecyclerId);
         recycler.setLayoutManager(new LinearLayoutManager(v.getContext(),LinearLayoutManager.VERTICAL,false));
-        txtInformacion=(TextView)v.findViewById(R.id.txtInformacion);
+   //     txtInformacion=(TextView)v.findViewById(R.id.txtInformacion);
         listDatos=cdDispositivos.GetListaDispositivos();
+        spinnerDevice=(Spinner)v.findViewById(R.id.spinnerDevice);
+        btnConectar=(Button) v.findViewById(R.id.btnConectar);
         if(listDatos!=null){
             adapter=new DispositivosControlAdapter(listDatos);
             adapter.setOnchecktoggle(this);
             adapter.setOnSeekBar(this);
             recycler.setAdapter(adapter);
         }
+
+        btnConectar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                NOMBRE_DISPOSITIVO_BT= spinnerDevice.getSelectedItem().toString();
+                if(NOMBRE_DISPOSITIVO_BT.isEmpty()){
+                    return;
+                }
+
+                descubrirDispositivosBT();
+            }
+        });
+
+
 
         recycler.setVisibility(View.INVISIBLE);
         h = new Handler() {
@@ -125,7 +148,7 @@ public class Principal extends Fragment implements DialogPaired.SelectDevideDial
                         if (endOfLineIndex > 0) {                                            // if end-of-line,
                             String sbprint = sb.substring(0, endOfLineIndex);               // extract string
                             sb.delete(0, sb.length());                                      // and clear
-                            txtInformacion.setText(sbprint);            // update TextView
+                           // txtInformacion.setText(sbprint);            // update TextView
                         }
                         Log.d(TAG, "...String:"+ sb.toString() +  "Byte:" + msg.arg1 + "...");
                         break;
@@ -161,11 +184,19 @@ En caso negativo presenta un mensaje al usuario y sale de la aplicación.
 
                                     Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();//Si hay dispositivos emparejados
                                     if (pairedDevices.size()> 0) {
-                                        List<BluetoothDevice> devicess=new ArrayList<>();
+                                        devicess=new ArrayList<>();
                                         devicess.addAll(pairedDevices);
-                                        DialogPaired dialogPaired=new DialogPaired();
+                                        String[] titles=new String[devicess.size()];
+                                        for (int i=0;i<devicess.size();i++){
+                                            titles[i]=devicess.get(i).getName();
+                                        }
+                                        if(NOMBRE_DISPOSITIVO_BT==""){
+                                            spinnerDevice.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,titles));
+                                        }
+
+                                       /* DialogPaired dialogPaired=new DialogPaired();
                                         dialogPaired.setDevices(devicess);
-                                        dialogPaired.show(getActivity().getFragmentManager(),"dispvinc");
+                                        dialogPaired.show(getActivity().getFragmentManager(),"dispvinc");*/
 /*
 Recorremos los dispositivos emparejados hasta encontrar el
 adaptador BT del arduino, en este caso se llama HC-06
@@ -191,7 +222,7 @@ adaptador BT del arduino, en este caso se llama HC-06
 
                                                 MensajeToast("...Connecting...");
                                                 btSocket.connect();
-                                                txtInformacion.setText("Conectado");
+                                              //  txtInformacion.setText("Conectado");
                                                 Log.d(TAG, "....Connection ok...");
                                                 recycler.setVisibility(View.VISIBLE);
                                             } catch (IOException e) {
@@ -257,7 +288,7 @@ adaptador BT del arduino, en este caso se llama HC-06
         if(Build.VERSION.SDK_INT >= 10){
             try {
                 final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", new Class[] { UUID.class });
-                return (BluetoothSocket) m.invoke(device, MY_UUID);
+                return (BluetoothSocket) m.invoke(device,MY_UUID );
             } catch (Exception e) {
                 Log.e("INFO=", "Could not create Insecure RFComm Connection",e);
             }
@@ -338,12 +369,12 @@ adaptador BT del arduino, en este caso se llama HC-06
     @Override
     public void itemStopTrackingTouch(View view, int position) {
         dispositivo=adapter.getItem(position);
-        MensajeToast("Stop Progreso="+progressChangedValue);
+     //   MensajeToast("Stop Progreso="+progressChangedValue);
         mConnectedThread.write(dispositivo.getPin()+":"+progressChangedValue);
     }
 
     @Override
-    public void onFinisSelectDevideDialog(String inputText) {
+    public void onFinisSelectDialog(String inputText) {
         NOMBRE_DISPOSITIVO_BT=inputText;
     }
 

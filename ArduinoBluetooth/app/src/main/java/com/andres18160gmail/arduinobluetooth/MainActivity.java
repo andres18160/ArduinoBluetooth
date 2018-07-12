@@ -141,6 +141,11 @@ Por lo tanto invocamos aqui al método que activa el BT y crea la tarea asincron
             }
 
         }
+        if (id == R.id.nav_code) {
+            fragment=new CodigoEjemploFragment();
+            FragmentoSeleccionado=true;
+
+        }
       /*  if (id == R.id.nav_Conection) {
             descubrirDispositivosBT();
 

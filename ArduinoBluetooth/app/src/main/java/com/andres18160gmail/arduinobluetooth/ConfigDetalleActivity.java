@@ -15,10 +15,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -32,7 +30,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -68,7 +65,7 @@ public class ConfigDetalleActivity extends AppCompatActivity {
         checkDigital=(RadioButton)findViewById(R.id.digital);
         checkAnalogo=(RadioButton)findViewById(R.id.analogo);
         spinnerPins=(Spinner)findViewById(R.id.spinnerPins);
-        spinnerTipos=(Spinner)findViewById(R.id.spinnerTipos);
+        spinnerTipos=(Spinner)findViewById(R.id.spinnerDevice);
         txtNombre=(EditText)findViewById(R.id.txtNombre);
         input_nombre=(TextInputLayout)findViewById(R.id.input_nombre);
         CargarLista();

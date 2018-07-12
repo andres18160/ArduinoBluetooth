@@ -61,4 +61,7 @@
     <string name="subtitle">Bluetooth dynamic control system</string>
     <string name="iniciarControl">Start Control</string>
     <string name="ConfigurarDIspositivos">Configure Devices</string>
+    <string name="txtdevice">Device</string>
+    <string name="txtcode">Arduino example code </string>
+
 </resources>

@@ -9,10 +9,9 @@ void setup() {
 }
  
 void loop() {
-  if (Serial.available() > 0) {  // if the data came
-    cadena = Serial.readString(); // read byte
-
-
+  if (Serial.available() > 0) { 
+    cadena = Serial.readString();
+    
     String pin, valor;
     for (int i = 0; i < cadena.length(); i++) {
       if (cadena.substring(i, i+1) == ":") {

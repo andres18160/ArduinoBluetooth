@@ -62,4 +62,6 @@
     <string name="subtitle">Sistema de control dinamico Bluetooth</string>
     <string name="iniciarControl">Iniciar Control</string>
     <string name="ConfigurarDIspositivos">Configurar Dispositivos</string>
+    <string name="txtdevice">Dispositivo</string>
+    <string name="txtcode">Arduino código ejemplo </string>
 </resources>
